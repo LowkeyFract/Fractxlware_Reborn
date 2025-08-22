@@ -1,42 +1,40 @@
 local HttpService = game:GetService("HttpService")
+local LicenseAPI = {}
 
-local KeyAPI = {}
+function LicenseAPI.ValidateKey(key, serviceId, hwid)
+    if not key or not serviceId or not hwid then
+        return false, "Missing parameters"
+    end
 
--- Validates a license key
-function KeyAPI.ValidateLicense(key, serviceId, hwid)
-    local validationUrl = string.format(
+    local url = string.format(
         "https://pandadevelopment.net/v2_validation?key=%s&service=%s&hwid=%s",
-        tostring(key), tostring(serviceId), tostring(hwid)
+        key, serviceId, hwid
     )
 
-    local success, response = pcall(game.HttpGet, game, validationUrl)
+    local response
+    local success, err = pcall(function()
+        -- For executor, GetAsync works in most cases
+        response = HttpService:GetAsync(url, true)
+    end)
+
     if not success then
-        warn("[LICENSE API] HTTP request failed: " .. tostring(response))
-        return false, "Request failed"
+        return false, "HTTP request failed: " .. tostring(err)
     end
 
-    local ok, data = pcall(HttpService.JSONDecode, HttpService, response)
-    if not ok or not data then
-        warn("[LICENSE API] Failed to decode JSON response: " .. tostring(data))
-        return false, "JSON decode error"
+    local decoded
+    local ok, decodeErr = pcall(function()
+        decoded = HttpService:JSONDecode(response)
+    end)
+
+    if not ok then
+        return false, "Failed to decode response: " .. tostring(decodeErr)
     end
 
-    if data.V2_Authentication == "success" then
-        print("[LICENSE API] Authenticated successfully.")
-        return true, "Authenticated"
+    if decoded.valid then
+        return true, decoded
     else
-        local reason = data.reason or "Unknown reason"
-        print("[LICENSE API] Authentication failed. Reason: " .. reason)
-        return false, "Authentication failed: " .. reason
+        return false, decoded.message or "Invalid key"
     end
 end
 
--- Returns a link to get a license
-function KeyAPI.GetLicenseLink(serviceId, hwid)
-    return string.format(
-        "https://pandadevelopment.net/getkey?service=%s&hwid=%s",
-        tostring(serviceId), tostring(hwid)
-    )
-end
-
-return KeyAPI
+return LicenseAPI

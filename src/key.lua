@@ -1,4 +1,4 @@
-local Identifier = "fractxlware_reborn"
+local Identifier = "ae5f33ddf59bf7627738f90f3ba4898dd041fa2358d69341b3e84c87ff6df1b7"
 
 local SCRIPT_DATA = {
     Name    = "Fractxlware Reborn",
@@ -94,23 +94,6 @@ Elements.KeySection = (function()
         Title = "Check License",
         Desc = "Check if your license key is valid.",
         Callback = function()
-            local serviceId = "fractxlware_reborn"
-            local hwid = game:GetService("RbxAnalyticsService"):GetClientId() or "unknown"
-
-            local success, message = LicenseAPI.ValidateLicense(License, serviceId, hwid)
-            if success then
-                WindUI:Notify({
-                    Title = "License Validated",
-                    Content = message,
-                    Icon = "check",
-                })
-            else
-                WindUI:Notify({
-                    Title = "License Error",
-                    Content = message,
-                    Icon = "error",
-                })
-            end
         end
     })
 
