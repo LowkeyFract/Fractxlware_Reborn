@@ -39,10 +39,8 @@ local WindUI, SoundModule = (function()
 end)()
 
 local Elements = {}
-
-local PremiumStart = {}
-
-function PremiumStart:Init()
+local FreemiumStart = {}
+function FreemiumStart:Init()
     WindUI:Notify({
         Title   = "Successfully Loaded!",
         Content = "Freemium Hub have been successfully loaded.",
@@ -52,13 +50,18 @@ function PremiumStart:Init()
     SoundModule.Play(82845990304289, 1, game:GetService("SoundService"))
 
     local win = WindUI:CreateWindow({
-        Title       = SCRIPT_DATA.Name,
-        Subtitle    = SCRIPT_DATA.Build.Name.." "..SCRIPT_DATA.Type.Name,
-        AccentColor = Color3.fromHex(SCRIPT_DATA.Build.Color),
-        Size        = UDim2.new(0, 600, 0, 400),
-        Theme       = "Dark",
-        Keybind     = Enum.KeyCode.RightControl,
-        MinSize     = UDim2.new(0, 400, 0, 300),
+        Title = SCRIPT_DATA.Name,
+        Folder = SCRIPT_DATA.Name,
+        Author = SCRIPT_DATA.Author,
+        Icon = "droplet",
+        Size = UDim2.fromOffset(580, 460),
+        Transparent = true,
+        Theme = "Dark",
+        Resizable = true,
+        SideBarWidth = 200,
+        BackgroundImageTransparency = 0.42,
+        HideSearchBar = true,
+        ScrollBarEnabled = false,
     })
 
         win:IsResizable(false)
@@ -83,5 +86,4 @@ function PremiumStart:Init()
 
     win:Divider()
 end
-
-return PremiumStart
+return FreemiumStart
