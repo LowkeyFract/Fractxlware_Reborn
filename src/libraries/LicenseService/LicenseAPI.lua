@@ -1,32 +1,48 @@
 local HttpService = game:GetService("HttpService")
+
 local LicenseAPI = {}
 
-function LicenseAPI.LicenseCheck(License, Indetifier, HWID)
+
+function LicenseAPI.ValidateLicense(License, Identifier, HWID)
+
+    local licenseEnc = HttpService:UrlEncode(tostring(License))
+    local identifierEnc = HttpService:UrlEncode(tostring(Identifier))
+    local hwidEnc = HttpService:UrlEncode(tostring(HWID))
+
     local url = string.format(
         "https://pandadevelopment.net/v2_validation?key=%s&service=%s&hwid=%s",
-        License, Indetifier, HWID
+        licenseEnc, identifierEnc, hwidEnc
     )
 
-    local success, response = pcall(function()
-        return game:HttpGet(url)
-    end)
-
+    local success, response = pcall(game.HttpGet, game, url)
     if not success then
-        warn("[KeyAuthError]: License request failed -", response)
-        return nil
+        warn("[LicenseAPI] HTTP request failed: " .. tostring(response))
+        return false, "HTTP request failed"
     end
 
-    local ok, licensedata = pcall(function()
-        return HttpService:JSONDecode(response)
-    end)
-
-    if not ok then
-        warn("[KeyAuthError]: Failed to decode license JSON -", licensedata)
-        return nil
+    local ok, data = pcall(HttpService.JSONDecode, HttpService, response)
+    if not ok or not data then
+        warn("[LicenseAPI] Failed to decode JSON response: " .. tostring(data))
+        return false, "JSON decode error"
     end
 
-    return licensedata
+    if data.V2_Authentication == "success" then
+        return true, data -- Return the full success data
+    else
+        local reason = data.reason or "Unknown reason"
+        return false, reason
+    end
+end
+
+
+function LicenseAPI.GetKeyLink(Identifier, HWID)
+    local identifierEnc = HttpService:UrlEncode(tostring(Identifier))
+    local hwidEnc = HttpService:UrlEncode(tostring(HWID))
+
+    return string.format(
+        "https://pandadevelopment.net/getkey?service=%s&hwid=%s",
+        identifierEnc, hwidEnc
+    )
 end
 
 return LicenseAPI
-
