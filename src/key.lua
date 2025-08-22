@@ -108,8 +108,6 @@ Elements.KeySection = (function()
                 return LicenseAPI.ValidateLicense(License, Identifier, CLIENT_HWID)
             end)
 
-            print(data.Key_Information.Notes)
-
             if success then
                 if isValid then
                     WindUI:Notify({
