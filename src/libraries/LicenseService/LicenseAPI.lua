@@ -2,7 +2,7 @@ local HttpService = game:GetService("HttpService")
 
 local KeyAPI = {}
 
-function KeyAPI.ValidateKey(key, serviceId, hwid)
+function KeyAPI.ValidateLicense(key, serviceId, hwid)
     if not HttpService then
         warn("[Pelinda Ov2.5] HttpService not available.")
         return false, "HttpService not available"
@@ -46,7 +46,7 @@ function KeyAPI.ValidateKey(key, serviceId, hwid)
     end
 end
 
-function KeyAPI.GetKeyLink(serviceId, hwid)
+function KeyAPI.GetLicenseLink(serviceId, hwid)
     return "https://pandadevelopment.net/getkey?service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
 end
 

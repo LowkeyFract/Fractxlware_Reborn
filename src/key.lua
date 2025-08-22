@@ -8,11 +8,14 @@ local SCRIPT_DATA = {
     Author  = "discord.gg/6qyh5mfN5h",
 }
 
-local WindUI, LoadingScreen, KeyAPI = (function()
+local SoundService = game:GetService("SoundService")
+
+local WindUI, LoadingScreen, SoundModule, LicenseAPI = (function()
     local LIBRARIES = {
         WindUI = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
         LoadingScreen = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LoadingScreen.lua",
-        KeyAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/KeyService/KeyAPI.lua",
+        LicenseAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/KeyService/KeyAPI.lua",
+        SoundModule = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundService.lua",
     }
 
     local loaded = {}
@@ -20,13 +23,14 @@ local WindUI, LoadingScreen, KeyAPI = (function()
         local ok, mod = pcall(loadstring, game:HttpGet(url))
         loaded[name] = ok and mod() or warn("Failed to load "..name)
     end
-    return loaded.WindUI, loaded.LoadingScreen, loaded.KeyAPI
+    return loaded.WindUI, loaded.LoadingScreen, loaded.SoundModule, loaded.LicenseAPI
 end)()
-
-LoadingScreen:ShowAsync()
 
 local Elements = {}
 Elements.KeyWindow = (function()
+    LoadingScreen:ShowAsync()
+    SoundModule.Play(82845990304289, 1, SoundService)
+    
     local win = WindUI:CreateWindow({
         Title = SCRIPT_DATA.Name,
         Folder = SCRIPT_DATA.Name,
