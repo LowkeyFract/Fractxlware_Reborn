@@ -1,4 +1,5 @@
 local Identifier = "fractxlware_reborn"
+local CLIENT_HWID = game:GetService("RbxAnalyticsService"):GetClientId()
 
 local SCRIPT_DATA = {
     Name    = "Fractxlware Reborn",
@@ -104,7 +105,8 @@ Elements.KeySection = (function()
             end
 
             local success, isValid, data = pcall(function()
-                return LicenseAPI.ValidateLicense(License, Identifier, game:GetService("RbxAnalyticsService"):GetClientId())
+                print(License, Identifier, CLIENT_HWID)
+                return LicenseAPI.ValidateLicense(License, Identifier, CLIENT_HWID)
             end)
 
             if success then

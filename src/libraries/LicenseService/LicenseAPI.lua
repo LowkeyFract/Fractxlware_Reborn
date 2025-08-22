@@ -10,8 +10,6 @@ function LicenseAPI.ValidateLicense(License, Identifier, HWID)
         License, Identifier, HWID
     )
 
-    print(License, Identifier, HWID)
-
     local success, response = pcall(game.HttpGet, game, url)
     if not success then
         warn("[LicenseAPI] HTTP request failed: " .. tostring(response))
