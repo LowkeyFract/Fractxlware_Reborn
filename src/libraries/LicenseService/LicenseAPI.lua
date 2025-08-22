@@ -5,13 +5,9 @@ local LicenseAPI = {}
 
 function LicenseAPI.ValidateLicense(License, Identifier, HWID)
 
-    local licenseEnc = HttpService:UrlEncode(tostring(License))
-    local identifierEnc = HttpService:UrlEncode(tostring(Identifier))
-    local hwidEnc = HttpService:UrlEncode(tostring(HWID))
-
     local url = string.format(
         "https://pandadevelopment.net/v2_validation?key=%s&service=%s&hwid=%s",
-        licenseEnc, identifierEnc, hwidEnc
+        License, Identifier, HWID
     )
 
     local success, response = pcall(game.HttpGet, game, url)
@@ -36,12 +32,9 @@ end
 
 
 function LicenseAPI.GetKeyLink(Identifier, HWID)
-    local identifierEnc = HttpService:UrlEncode(tostring(Identifier))
-    local hwidEnc = HttpService:UrlEncode(tostring(HWID))
-
     return string.format(
         "https://pandadevelopment.net/getkey?service=%s&hwid=%s",
-        identifierEnc, hwidEnc
+        Identifier, HWID
     )
 end
 

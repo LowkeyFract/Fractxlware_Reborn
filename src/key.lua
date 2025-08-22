@@ -103,29 +103,28 @@ Elements.KeySection = (function()
                 return
             end
 
-            local success, isValid, _ = pcall(function()
-                return LicenseAPI.ValidateKey(License, Identifier, game:GetService("RbxAnalyticsService"):GetClientId())
+            local success, isValid, data = pcall(function()
+                return LicenseAPI.ValidateLicense(License, Identifier, game:GetService("RbxAnalyticsService"):GetClientId())
             end)
 
-            if not success then
-                WindUI:Notify({
-                    Title = "Error",
-                    Content = "[LICENSE API] Service failed to respond. Please try again later.",
-                    Icon = "error",
-                })
-                return
-            end
-
-            if isValid then
-                WindUI:Notify({
-                    Title = "Success",
-                    Content = "License Validated!",
-                    Icon = "check",
-                })
+            if success then
+                if isValid then
+                    WindUI:Notify({
+                        Title = "Success",
+                        Content = "License Validated!",
+                        Icon = "check",
+                    })
+                else
+                    WindUI:Notify({
+                        Title = "Error",
+                        Content = "License is invalid or expired: "..tostring(data),
+                        Icon = "error",
+                    })
+                end
             else
                 WindUI:Notify({
                     Title = "Error",
-                    Content = "License is invalid or expired.",
+                    Content = "[LICENSE API] Service failed to respond. Please try again later.",
                     Icon = "error",
                 })
             end
