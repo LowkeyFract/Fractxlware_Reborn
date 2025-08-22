@@ -120,7 +120,7 @@ Elements.KeySection = (function()
                 else
                     WindUI:Notify({
                         Title = "Error",
-                        Content = data.Key_Information.Notes,
+                        Content = data.Notes,
                         Icon = "bug",
                     })
                 end
