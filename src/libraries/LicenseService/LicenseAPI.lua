@@ -23,7 +23,8 @@ function LicenseAPI.ValidateLicense(License, Identifier, HWID)
     end
 
     if data.V2_Authentication == "success" then
-        return true, data
+        local reason = (data.Key_Information and data.Key_Information.Notes) or "Unknown reason"
+        return true, reason
     else
         local reason = (data.Key_Information and data.Key_Information.Notes) or "Unknown reason"
         return false, reason
