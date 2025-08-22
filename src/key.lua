@@ -112,7 +112,7 @@ Elements.KeySection = (function()
                 if isValid then
                     WindUI:Notify({
                         Title = "Success",
-                        Content = data,
+                        Content = "Authenticated Successfully!",
                         Icon = "check",
                     })
                 else
