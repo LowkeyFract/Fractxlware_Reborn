@@ -2,52 +2,41 @@ local HttpService = game:GetService("HttpService")
 
 local KeyAPI = {}
 
+-- Validates a license key
 function KeyAPI.ValidateLicense(key, serviceId, hwid)
-    if not HttpService then
-        warn("[Pelinda Ov2.5] HttpService not available.")
-        return false, "HttpService not available"
+    local validationUrl = string.format(
+        "https://pandadevelopment.net/v2_validation?key=%s&service=%s&hwid=%s",
+        tostring(key), tostring(serviceId), tostring(hwid)
+    )
+
+    local success, response = pcall(game.HttpGet, game, validationUrl)
+    if not success then
+        warn("[LICENSE API] HTTP request failed: " .. tostring(response))
+        return false, "Request failed"
     end
 
-    local validationUrl = "https://pandadevelopment.net/v2_validation?key=" .. tostring(key) .. "&service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
-    
-    local success, response = pcall(function()
-        return HttpService:RequestAsync({
-            Url = validationUrl,
-            Method = "GET"
-        })
-    end)
-    
-    if success and response then
-        if response.Success then
-            local jsonData, decodeSuccess = pcall(function()
-                return HttpService:JSONDecode(response.Body)
-            end)
-            
-            if decodeSuccess and jsonData then
-                if jsonData["V2_Authentication"] == "success" then
-                    print("[Pelinda Ov2.5] Authenticated successfully.")
-                    return true, "Authenticated"
-                else
-                    local reason = jsonData["reason"] or "Unknown reason"
-                    print("[Pelinda Ov2.5] Authentication failed. Reason: " .. reason)
-                    return false, "Authentication failed: " .. reason
-                end
-            else
-                warn("[Pelinda Ov2.5] Failed to decode JSON response.")
-                return false, "JSON decode error"
-            end
-        else
-            warn("[Pelinda Ov2.5] HTTP request was not successful. Code: " .. tostring(response.StatusCode) .. " Message: " .. response.StatusMessage)
-            return false, "HTTP request failed: " .. response.StatusMessage
-        end
+    local ok, data = pcall(HttpService.JSONDecode, HttpService, response)
+    if not ok or not data then
+        warn("[LICENSE API] Failed to decode JSON response: " .. tostring(data))
+        return false, "JSON decode error"
+    end
+
+    if data.V2_Authentication == "success" then
+        print("[LICENSE API] Authenticated successfully.")
+        return true, "Authenticated"
     else
-        warn("[Pelinda Ov2.5] pcall failed for HttpService:RequestAsync. Error: " .. tostring(response)) -- 'response' here is the error message from pcall
-        return false, "Request pcall error"
+        local reason = data.reason or "Unknown reason"
+        print("[LICENSE API] Authentication failed. Reason: " .. reason)
+        return false, "Authentication failed: " .. reason
     end
 end
 
+-- Returns a link to get a license
 function KeyAPI.GetLicenseLink(serviceId, hwid)
-    return "https://pandadevelopment.net/getkey?service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
+    return string.format(
+        "https://pandadevelopment.net/getkey?service=%s&hwid=%s",
+        tostring(serviceId), tostring(hwid)
+    )
 end
 
 return KeyAPI

@@ -14,8 +14,8 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI = (function()
     local LIBRARIES = {
         WindUI = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
         LoadingScreen = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LoadingScreen.lua",
-        LicenseAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/KeyService/KeyAPI.lua",
         SoundModule = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundService.lua",
+        LicenseAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LicenseService/LicenseAPI.lua",
     }
 
     local loaded = {}
@@ -29,8 +29,13 @@ end)()
 local Elements = {}
 Elements.KeyWindow = (function()
     LoadingScreen:ShowAsync()
+    WindUI:Notify({
+        Title = "Successfully Loaded!",
+        Content = "Fractxlware Reborn has been successfully loaded.",
+        Icon = "check",
+    })
     SoundModule.Play(82845990304289, 1, SoundService)
-    
+
     local win = WindUI:CreateWindow({
         Title = SCRIPT_DATA.Name,
         Folder = SCRIPT_DATA.Name,
@@ -61,10 +66,10 @@ Elements.KeyWindow = (function()
 end)()
 
 Elements.KeySection = (function()
-    local UserKey = ""
+    local License = ""
 
     local section = Elements.KeyWindow:Section({
-        Title = "Key System",
+        Title = "License System",
         Icon = "key-round",
         Opened = true,
     })
@@ -72,6 +77,41 @@ Elements.KeySection = (function()
     section.Login = section:Tab({
         Title = "Login",
         Icon = "log-in"
+    })
+
+    section.Login.Input = section.Login:Input({
+        Title = "Input",
+        Desc = "Input your license key to gain access to Fractxlware Reborn.",
+        Value = "",
+        Type = "Input",
+        Placeholder = "License here..",
+        Callback = function(input) 
+            License = input
+        end
+    })
+
+    section.Login.CheckKey = section.Login:Button({
+        Title = "Check License",
+        Desc = "Check if your license key is valid.",
+        Callback = function()
+            local serviceId = "fractxlware_reborn"
+            local hwid = game:GetService("RbxAnalyticsService"):GetClientId() or "unknown"
+
+            local success, message = LicenseAPI.ValidateLicense(License, serviceId, hwid)
+            if success then
+                WindUI:Notify({
+                    Title = "License Validated",
+                    Content = message,
+                    Icon = "check",
+                })
+            else
+                WindUI:Notify({
+                    Title = "License Error",
+                    Content = message,
+                    Icon = "error",
+                })
+            end
+        end
     })
 
     return section
