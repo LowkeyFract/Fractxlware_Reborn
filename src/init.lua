@@ -39,6 +39,7 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI, PremiumStart, FreemiumStar
         PremiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Premium.lua",
         FreemiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Freemium.lua",
     }
+    
 
     local loaded = {}
     for name, url in pairs(LIBRARIES) do
@@ -121,7 +122,7 @@ Elements.KeySection = (function()
     section.Login.Input = section.Login:Input({
         Title = "Input",
         Desc = "Enter your license here",
-        Value = "",
+        Value = (isfile and isfile("Fractxlware Reborn/license.key") and readfile("Fractxlware Reborn/license.key")) or "",
         Type = "Input",
         Placeholder = "License here...",
         Callback = function(input) 
@@ -131,12 +132,12 @@ Elements.KeySection = (function()
 
     section.Login.CheckKey = section.Login:Button({
         Title = "Check License",
-        Desc = "Check if your license key is valid.",
+        Desc = "Check if your license key is valid",
         Callback = function()
             if CLIENT_DATA.LICENSE == "" then
                 WindUI:Notify({
                     Title = "Error",
-                    Content = "Please enter a license key.",
+                    Content = "Please enter a license key",
                     Icon = "bug",
                 })
                 return
@@ -155,6 +156,7 @@ Elements.KeySection = (function()
                     })
                     CLIENT_DATA.HASPREMIUM = data
                     Elements.KeyWindow:Close():Destroy()
+                    writefile(Elements.KeyWindow.Folder .. "/" .. "license" .. ".key", tostring(CLIENT_DATA.LICENSE))
                     if CLIENT_DATA.HASPREMIUM then
                         PremiumStart:Init()
                             WindUI:Notify({
@@ -189,7 +191,7 @@ Elements.KeySection = (function()
 
     section.Login.GetKey = section.Login:Button({
         Title = "Get License",
-        Desc = "Get a license key for Fractxlware Reborn.",
+        Desc = "Get a license key for Fractxlware Reborn",
         Callback = function()
             local url = LicenseAPI.GetKeyLink(Identifier, CLIENT_DATA.HWID)
             pcall(function()
