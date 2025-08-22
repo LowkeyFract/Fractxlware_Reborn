@@ -2,7 +2,7 @@ local Identifier = "fractxlware_reborn"
 
 local SCRIPT_DATA = {
     Name    = "Fractxlware Reborn",
-    Build   = { Name = "Beta", Color = "#035B85" },
+    Build   = { Name = "Development", Color = "#FFA41A" },
     Type    = { Name = "Public", Color = "#234234" },
     Author  = "discord.gg/6qyh5mfN5h",
 }

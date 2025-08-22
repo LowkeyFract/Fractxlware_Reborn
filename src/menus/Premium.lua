@@ -1,7 +1,7 @@
 local SCRIPT_DATA = {
     Name   = "Fractxlware Reborn",
     Build  = { Name = "Beta", Color = "#035B85" },
-    Type   = { Name = "Premium", Color = "#234234" },
+    Type   = { Name = "Premium", Color = "#005BD9" },
     Author = "discord.gg/6qyh5mfN5h",
 }
 
