@@ -39,16 +39,8 @@ local WindUI, SoundModule = (function()
 end)()
 
 local Elements = {}
-
 local PremiumStart = {}
-
 function PremiumStart:Init()
-    WindUI:Notify({
-        Title   = "Successfully Loaded!",
-        Content = "Premium Hub have been successfully loaded.",
-        Icon    = "check",
-    })
-
     SoundModule.Play(82845990304289, 1, game:GetService("SoundService"))
 
     local win = WindUI:CreateWindow({
@@ -88,5 +80,4 @@ function PremiumStart:Init()
 
     win:Divider()
 end
-
 return PremiumStart

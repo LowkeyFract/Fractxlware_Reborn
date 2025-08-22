@@ -41,12 +41,6 @@ end)()
 local Elements = {}
 local FreemiumStart = {}
 function FreemiumStart:Init()
-    WindUI:Notify({
-        Title   = "Successfully Loaded!",
-        Content = "Freemium Hub have been successfully loaded.",
-        Icon    = "check",
-    })
-
     SoundModule.Play(82845990304289, 1, game:GetService("SoundService"))
 
     local win = WindUI:CreateWindow({

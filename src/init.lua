@@ -157,8 +157,18 @@ Elements.KeySection = (function()
                     Elements.KeyWindow:Close():Destroy()
                     if CLIENT_DATA.HASPREMIUM then
                         PremiumStart:Init()
+                            WindUI:Notify({
+                                Title   = "Successfully Loaded!",
+                                Content = "Premium Hub have been successfully loaded.",
+                                Icon    = "check",
+                            })
                     else
                         FreemiumStart:Init()
+                            WindUI:Notify({
+                                Title   = "Successfully Loaded!",
+                                Content = "Freemium Hub have been successfully loaded.",
+                                Icon    = "check",
+                            })
                     end
                 else
                     WindUI:Notify({
@@ -176,7 +186,7 @@ Elements.KeySection = (function()
             end
         end
     })
-    
+
     section.Login.GetKey = section.Login:Button({
         Title = "Get License",
         Desc = "Get a license key for Fractxlware Reborn.",
