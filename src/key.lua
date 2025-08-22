@@ -10,7 +10,21 @@ local SCRIPT_DATA = {
 
 local CLIENT_DATA = {
     HWID = game:GetService("RbxAnalyticsService"):GetClientId(),
-    GAME = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown",
+    GAME = (function()
+        local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown"
+        name = name:gsub("%b()", "")
+        name = name:gsub("%b[]", "")
+        name = name:gsub("[%z\1-\127\194-\244][\128-\191]*", function(c)
+            if c:match("[%w%s]") then
+                return c
+            else
+                return ""
+            end
+        end)
+        name = name:gsub("[^%w%s]", "")
+        name = name:gsub("%s+", " "):gsub("^%s+", ""):gsub("%s+$", "")
+        return name
+    end)()
 }
 
 local SoundService = game:GetService("SoundService")
@@ -19,7 +33,7 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI = (function()
     local LIBRARIES = {
         WindUI = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
         LoadingScreen = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LoadingScreen.lua",
-        SoundService = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundModule.lua",
+        SoundModule = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundModule.lua",
         LicenseAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LicenseService/LicenseAPI.lua",
     }
 
@@ -33,14 +47,14 @@ end)()
 
 local Elements = {}
 Elements.KeyWindow = (function()
-    LoadingScreen:ShowAsync()
+    -- LoadingScreen:ShowAsync()
     WindUI:Notify({
         Title = "Successfully Loaded!",
         Content = "Fractxlware Reborn has been successfully loaded.",
         Icon = "check",
     })
 
-    SoundService.Play(82845990304289, 1, SoundService)
+    SoundModule.Play(82845990304289, 1, SoundService)
 
     local win = WindUI:CreateWindow({
         Title = SCRIPT_DATA.Name,
@@ -56,6 +70,8 @@ Elements.KeyWindow = (function()
         ScrollBarEnabled = false,
     })
 
+    win:IsResizable(false)
+
     win:DisableTopbarButtons({"Minimize", "Fullscreen"})
 
     win:Tag({
@@ -67,6 +83,14 @@ Elements.KeyWindow = (function()
         Title = SCRIPT_DATA.Type.Name,
         Color = Color3.fromHex(SCRIPT_DATA.Type.Color)
     })
+
+    win.GameSection = win:Section({
+        Title = CLIENT_DATA.GAME,
+        Icon = "gamepad",
+        Opened = false,
+    })
+
+    win:Divider()
 
     return win
 end)()
@@ -84,6 +108,12 @@ Elements.KeySection = (function()
         Title = "Login",
         Icon = "log-in"
     })
+
+    section.Login.Info = section.Login:Paragraph({
+
+    })
+
+    section.Login:Divider()
 
     section.Login.Input = section.Login:Input({
         Title = "Input",
@@ -136,7 +166,22 @@ Elements.KeySection = (function()
             end
         end
     })
-
+    
+    section.Login.GetKey = section.Login:Button({
+        Title = "Get License",
+        Desc = "Get a license key for Fractxlware Reborn.",
+        Callback = function()
+            local url = LicenseAPI.GetKeyLink(Identifier, CLIENT_DATA.HWID)
+            pcall(function()
+                setclipboard(url)
+            end)
+            WindUI:Notify({
+                Title = "Get License",
+                Content = "A link to get a license has been copied to your clipboard.",
+                Icon = "link",
+            })
+        end
+    })
 
     return section
 end)()
