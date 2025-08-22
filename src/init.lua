@@ -4,7 +4,6 @@ local SCRIPT_DATA = {
     Name    = "Fractxlware Reborn",
     Build   = { Name = "Beta", Color = "#035B85" },
     Type    = { Name = "Public", Color = "#234234" },
-    Version = "1.0.0",
     Author  = "discord.gg/6qyh5mfN5h",
 }
 
@@ -31,12 +30,14 @@ local CLIENT_DATA = {
 
 local SoundService = game:GetService("SoundService")
 
-local WindUI, LoadingScreen, SoundModule, LicenseAPI = (function()
+local WindUI, LoadingScreen, SoundModule, LicenseAPI, PremiumStart, FreemiumStart = (function()
     local LIBRARIES = {
         WindUI = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
         LoadingScreen = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LoadingScreen.lua",
         SoundModule = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundModule.lua",
         LicenseAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LicenseAPI.lua",
+        PremiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Premium.lua",
+        FreemiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Freemium.lua",
     }
 
     local loaded = {}
@@ -44,7 +45,7 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI = (function()
         local ok, mod = pcall(loadstring, game:HttpGet(url))
         loaded[name] = ok and mod() or warn("Failed to load "..name)
     end
-    return loaded.WindUI, loaded.LoadingScreen, loaded.SoundModule, loaded.LicenseAPI
+    return loaded.WindUI, loaded.LoadingScreen, loaded.SoundModule, loaded.LicenseAPI, loaded.PremiumStart, loaded.FreemiumStart
 end)()
 
 local Elements = {}
@@ -153,6 +154,12 @@ Elements.KeySection = (function()
                         Icon = "check",
                     })
                     CLIENT_DATA.HASPREMIUM = data
+                    Elements.KeyWindow:Close():Destroy()
+                    if CLIENT_DATA.HASPREMIUM then
+                        PremiumStart:Init()
+                    else
+                        FreemiumStart:Init()
+                    end
                 else
                     WindUI:Notify({
                         Title = "Error",
