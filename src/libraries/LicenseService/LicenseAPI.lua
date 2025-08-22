@@ -2,7 +2,6 @@ local HttpService = game:GetService("HttpService")
 
 local LicenseAPI = {}
 
-
 function LicenseAPI.ValidateLicense(License, Identifier, HWID)
 
     local url = string.format(

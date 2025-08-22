@@ -1,5 +1,4 @@
 local Identifier = "fractxlware_reborn"
-local CLIENT_HWID = game:GetService("RbxAnalyticsService"):GetClientId()
 
 local SCRIPT_DATA = {
     Name    = "Fractxlware Reborn",
@@ -9,13 +8,18 @@ local SCRIPT_DATA = {
     Author  = "discord.gg/6qyh5mfN5h",
 }
 
+local CLIENT_DATA = {
+    HWID = game:GetService("RbxAnalyticsService"):GetClientId(),
+    GAME = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown",
+}
+
 local SoundService = game:GetService("SoundService")
 
 local WindUI, LoadingScreen, SoundModule, LicenseAPI = (function()
     local LIBRARIES = {
         WindUI = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
         LoadingScreen = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LoadingScreen.lua",
-        SoundModule = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundService.lua",
+        SoundService = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundModule.lua",
         LicenseAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LicenseService/LicenseAPI.lua",
     }
 
@@ -35,7 +39,8 @@ Elements.KeyWindow = (function()
         Content = "Fractxlware Reborn has been successfully loaded.",
         Icon = "check",
     })
-    SoundModule.Play(82845990304289, 1, SoundService)
+
+    SoundService.Play(82845990304289, 1, SoundService)
 
     local win = WindUI:CreateWindow({
         Title = SCRIPT_DATA.Name,
@@ -105,7 +110,7 @@ Elements.KeySection = (function()
             end
 
             local success, isValid, data = pcall(function()
-                return LicenseAPI.ValidateLicense(License, Identifier, CLIENT_HWID)
+                return LicenseAPI.ValidateLicense(License, Identifier, CLIENT_DATA.HWID)
             end)
 
             if success then
@@ -125,7 +130,7 @@ Elements.KeySection = (function()
             else
                 WindUI:Notify({
                     Title = "Error",
-                    Content = "[LICENSE API] Service failed to respond. Please try again later.",
+                    Content = "Service failed to respond. Please try again later.",
                     Icon = "bug",
                 })
             end
