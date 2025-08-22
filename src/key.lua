@@ -117,7 +117,7 @@ Elements.KeySection = (function()
                 else
                     WindUI:Notify({
                         Title = "Error",
-                        Content = "License is invalid or expired: "..tostring(data),
+                        Content = (data and data.Key_Information and data.Key_Information.Notes) or "Unknown error",
                         Icon = "error",
                     })
                 end
