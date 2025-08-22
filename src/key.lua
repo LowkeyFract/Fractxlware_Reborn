@@ -24,7 +24,9 @@ local CLIENT_DATA = {
         name = name:gsub("[^%w%s]", "")
         name = name:gsub("%s+", " "):gsub("^%s+", ""):gsub("%s+$", "")
         return name
-    end)()
+    end)(),
+    HASPREMIUM = false,
+    LICENSE = "",
 }
 
 local SoundService = game:GetService("SoundService")
@@ -97,8 +99,6 @@ Elements.KeyWindow = (function()
 end)()
 
 Elements.KeySection = (function()
-    local License = ""
-
     local section = Elements.KeyWindow:Section({
         Title = "License System",
         Icon = "key-round",
@@ -123,7 +123,7 @@ Elements.KeySection = (function()
         Type = "Input",
         Placeholder = "License here...",
         Callback = function(input) 
-            License = input
+            CLIENT_DATA.LICENSE = input
         end
     })
 
@@ -131,7 +131,7 @@ Elements.KeySection = (function()
         Title = "Check License",
         Desc = "Check if your license key is valid.",
         Callback = function()
-            if License == "" then
+            if CLIENT_DATA.LICENSE == "" then
                 WindUI:Notify({
                     Title = "Error",
                     Content = "Please enter a license key.",
@@ -141,7 +141,7 @@ Elements.KeySection = (function()
             end
 
             local success, isValid, data = pcall(function()
-                return LicenseAPI.ValidateLicense(License, Identifier, CLIENT_DATA.HWID)
+                return LicenseAPI.ValidateLicense(CLIENT_DATA.LICENSE, Identifier, CLIENT_DATA.HWID)
             end)
 
             if success then
@@ -151,6 +151,7 @@ Elements.KeySection = (function()
                         Content = if data == true then "Premium Key Authenticated" else "Authenticated successfully!",
                         Icon = "check",
                     })
+                    CLIENT_DATA.HASPREMIUM = data
                 else
                     WindUI:Notify({
                         Title = "Error",
