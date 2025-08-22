@@ -62,7 +62,7 @@ Elements.KeyWindow = (function()
         Title = SCRIPT_DATA.Name,
         Folder = SCRIPT_DATA.Name,
         Author = SCRIPT_DATA.Author,
-        Icon = "",
+        Icon = "droplet",
         Size = UDim2.fromOffset(580, 460),
         Transparent = true,
         Theme = "Dark",
@@ -110,7 +110,8 @@ Elements.KeySection = (function()
         Icon = "log-in"
     })
 
-    section.Login.Info = section.Login:Paragraph({
+
+    section.Login.Info = section.Login:Section({
         Title = "License System"
     })
 
