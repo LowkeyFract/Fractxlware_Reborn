@@ -47,7 +47,7 @@ end)()
 
 local Elements = {}
 Elements.KeyWindow = (function()
-    -- LoadingScreen:ShowAsync()
+    LoadingScreen:ShowAsync()
     WindUI:Notify({
         Title = "Successfully Loaded!",
         Content = "Fractxlware Reborn has been successfully loaded.",
@@ -60,6 +60,7 @@ Elements.KeyWindow = (function()
         Title = SCRIPT_DATA.Name,
         Folder = SCRIPT_DATA.Name,
         Author = SCRIPT_DATA.Author,
+        Icon = "",
         Size = UDim2.fromOffset(580, 460),
         Transparent = true,
         Theme = "Dark",
@@ -110,17 +111,17 @@ Elements.KeySection = (function()
     })
 
     section.Login.Info = section.Login:Paragraph({
-
+        Title = "License System"
     })
 
     section.Login:Divider()
 
     section.Login.Input = section.Login:Input({
         Title = "Input",
-        Desc = "Input your license key to gain access to Fractxlware Reborn.",
+        Desc = "Enter your license here",
         Value = "",
         Type = "Input",
-        Placeholder = "License here..",
+        Placeholder = "License here...",
         Callback = function(input) 
             License = input
         end
