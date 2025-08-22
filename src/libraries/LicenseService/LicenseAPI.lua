@@ -1,40 +1,32 @@
 local HttpService = game:GetService("HttpService")
 local LicenseAPI = {}
 
-function LicenseAPI.ValidateKey(key, serviceId, hwid)
-    if not key or not serviceId or not hwid then
-        return false, "Missing parameters"
-    end
-
+function LicenseAPI.LicenseCheck(License, Indetifier, HWID)
     local url = string.format(
         "https://pandadevelopment.net/v2_validation?key=%s&service=%s&hwid=%s",
-        key, serviceId, hwid
+        License, Indetifier, HWID
     )
 
-    local response
-    local success, err = pcall(function()
-        -- For executor, GetAsync works in most cases
-        response = HttpService:GetAsync(url, true)
+    local success, response = pcall(function()
+        return game:HttpGet(url)
     end)
 
     if not success then
-        return false, "HTTP request failed: " .. tostring(err)
+        warn("[KeyAuthError]: License request failed -", response)
+        return nil
     end
 
-    local decoded
-    local ok, decodeErr = pcall(function()
-        decoded = HttpService:JSONDecode(response)
+    local ok, licensedata = pcall(function()
+        return HttpService:JSONDecode(response)
     end)
 
     if not ok then
-        return false, "Failed to decode response: " .. tostring(decodeErr)
+        warn("[KeyAuthError]: Failed to decode license JSON -", licensedata)
+        return nil
     end
 
-    if decoded.valid then
-        return true, decoded
-    else
-        return false, decoded.message or "Invalid key"
-    end
+    return licensedata
 end
 
 return LicenseAPI
+
