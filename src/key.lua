@@ -99,7 +99,7 @@ Elements.KeySection = (function()
                 WindUI:Notify({
                     Title = "Error",
                     Content = "Please enter a license key.",
-                    Icon = "error",
+                    Icon = "bug",
                 })
                 return
             end
@@ -107,6 +107,8 @@ Elements.KeySection = (function()
             local success, isValid, data = pcall(function()
                 return LicenseAPI.ValidateLicense(License, Identifier, CLIENT_HWID)
             end)
+
+            print(data.Key_Information.Notes)
 
             if success then
                 if isValid then
@@ -118,15 +120,15 @@ Elements.KeySection = (function()
                 else
                     WindUI:Notify({
                         Title = "Error",
-                        Content = type(data)=="table" and ((data.Key_Information and data.Key_Information.Notes) or (data.reason or "Unknown error")) or tostring(data or "Unknown error"),
-                        Icon = "error",
+                        Content = data.Key_Information.Notes,
+                        Icon = "bug",
                     })
                 end
             else
                 WindUI:Notify({
                     Title = "Error",
                     Content = "[LICENSE API] Service failed to respond. Please try again later.",
-                    Icon = "error",
+                    Icon = "bug",
                 })
             end
         end
