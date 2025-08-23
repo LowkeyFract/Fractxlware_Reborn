@@ -2,7 +2,7 @@ local Identifier = "fractxlware_reborn"
 
 local SCRIPT_DATA = {
     Name    = "Fractxlware Reborn",
-    Build   = { Name = "Development", Color = "#FFA41A" },
+    Build   = { Name = "In Development", Color = "#FFA41A" },
     Type    = { Name = "Public", Color = "#234234" },
     Author  = "discord.gg/6qyh5mfN5h",
 }
@@ -40,7 +40,6 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI, PremiumStart, FreemiumStar
         FreemiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Freemium.lua",
     }
 
-    
     local loaded = {}
     for name, url in pairs(LIBRARIES) do
         local ok, mod = pcall(loadstring, game:HttpGet(url))
