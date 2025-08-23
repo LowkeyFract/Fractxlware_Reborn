@@ -30,14 +30,12 @@ local CLIENT_DATA = {
 
 local SoundService = game:GetService("SoundService")
 
-local WindUI, LoadingScreen, SoundModule, LicenseAPI, PremiumStart, FreemiumStart = (function()
+local WindUI, LoadingScreen, SoundModule, LicenseAPI = (function()
     local LIBRARIES = {
         WindUI = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
         LoadingScreen = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LoadingScreen.lua",
         SoundModule = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundModule.lua",
         LicenseAPI = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/LicenseAPI.lua",
-        PremiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Premium.lua",
-        FreemiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Freemium.lua",
     }
 
     local loaded = {}
@@ -45,7 +43,7 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI, PremiumStart, FreemiumStar
         local ok, mod = pcall(loadstring, game:HttpGet(url))
         loaded[name] = ok and mod() or warn("Failed to load "..name)
     end
-    return loaded.WindUI, loaded.LoadingScreen, loaded.SoundModule, loaded.LicenseAPI, loaded.PremiumStart, loaded.FreemiumStart
+    return loaded.WindUI, loaded.LoadingScreen, loaded.SoundModule, loaded.LicenseAPI
 end)()
 
 local Elements = {}
@@ -157,14 +155,14 @@ Elements.KeySection = (function()
                     Elements.KeyWindow:Close():Destroy()
                     writefile(Elements.KeyWindow.Folder .. "/" .. "license" .. ".key", tostring(CLIENT_DATA.LICENSE))
                     if CLIENT_DATA.HASPREMIUM then
-                        PremiumStart:Init()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Premium.lua"))()
                             WindUI:Notify({
                                 Title   = "Successfully Loaded!",
                                 Content = "Premium Hub has been successfully loaded.",
                                 Icon    = "check",
                             })
                     else
-                        FreemiumStart:Init()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Freemium.lua"))()
                             WindUI:Notify({
                                 Title   = "Successfully Loaded!",
                                 Content = "Freemium Hub has been successfully loaded.",

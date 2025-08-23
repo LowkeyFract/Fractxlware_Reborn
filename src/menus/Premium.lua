@@ -39,8 +39,7 @@ local WindUI, SoundModule = (function()
 end)()
 
 local Elements = {}
-local PremiumStart = {}
-function PremiumStart:Init()
+Elements.PremiumWindow = (function()
     SoundModule.Play(82845990304289, 1, game:GetService("SoundService"))
 
     local win = WindUI:CreateWindow({
@@ -79,5 +78,5 @@ function PremiumStart:Init()
     })
 
     win:Divider()
-end
-return PremiumStart
+end)()
+
