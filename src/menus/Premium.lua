@@ -42,12 +42,6 @@ end)()
 
 local Elements = {}
 Elements.PremiumWindow = (function()
-    WindUI:Notify({
-        Title = "Successfully Loaded!",
-        Content = "Fractxlware Reborn has been successfully loaded.",
-        Icon = "check",
-    })
-
     SoundModule.Play(82845990304289, 1, SoundService)
 
     local win = WindUI:CreateWindow({
