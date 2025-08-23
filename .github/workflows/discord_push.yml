@@ -13,11 +13,25 @@ jobs:
           WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           COMMIT_AVATAR: ${{ github.event.head_commit.author.avatar_url }}
+          COMMIT_SHA: ${{ github.sha }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          # Use default avatar if none
+          # Default avatar if GitHub doesn't provide one
           if [ -z "$COMMIT_AVATAR" ]; then
             COMMIT_AVATAR="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           fi
+
+          # Pick embed color based on branch
+          if [ "$BRANCH" = "main" ]; then
+            COLOR=3447003   # Blue
+          elif [ "$BRANCH" = "Development" ]; then
+            COLOR=16753920  # Orange/yellow
+          else
+            COLOR=7506394   # Default purple/gray
+          fi
+
+          # Shorten commit hash
+          SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
 
           curl -H "Content-Type: application/json" \
                -X POST \
@@ -26,8 +40,11 @@ jobs:
                  \"embeds\":[{
                    \"author\":{\"name\":\"New Commit\",\"icon_url\":\"$COMMIT_AVATAR\"},
                    \"description\":\"$COMMIT_MESSAGE\",
-                   \"url\":\"\",
-                   \"color\": 7506394,
-                   \"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"                 
+                   \"fields\":[
+                     {\"name\":\"Commit\",\"value\":\"\`$SHORT_SHA\`\",\"inline\":true},
+                     {\"name\":\"Branch\",\"value\":\"$BRANCH\",\"inline\":true}
+                   ],
+                   \"color\": $COLOR,
+                   \"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
                  }]
                }" $WEBHOOK_URL
