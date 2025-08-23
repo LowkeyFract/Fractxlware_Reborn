@@ -1,3 +1,5 @@
+local SoundService = game:GetService("SoundService")
+
 local SCRIPT_DATA = {
     Name   = "Fractxlware Reborn",
     Build   = { Name = "In Development", Color = "#FFA41A" },
@@ -22,8 +24,6 @@ local CLIENT_DATA = {
         return name
     end)(),
 }
-
-local SoundService = game:GetService("SoundService")
 
 local WindUI, SoundModule = (function()
     local LIBRARIES = {

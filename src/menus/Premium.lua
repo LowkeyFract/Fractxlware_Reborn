@@ -1,3 +1,6 @@
+local SoundService = game:GetService("SoundService")
+local Players = game:GetService("Players")
+
 local SCRIPT_DATA = {
     Name   = "Fractxlware Reborn",
     Build   = { Name = "In Development", Color = "#FFA41A" },
@@ -6,6 +9,12 @@ local SCRIPT_DATA = {
 }
 
 local CLIENT_DATA = {
+    DEVICE = game:GetService("UserInputService"):GetPlatform() or "Unknown",
+    ACC_NAME = Players.LocalPlayer.Name or "Unknown",
+    ACC_DISPLAY_NAME = Players.LocalPlayer.DisplayName or "Unknown",
+    PLAYER_ID = Players.LocalPlayer.UserId or 0,
+    CLIENT_ID = game:GetService("RbxAnalyticsService"):GetClientId(),
+    ACCOUNT_AGE = Players.LocalPlayer.AccountAge or 0,
     GAME = (function()
         local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown"
         name = name:gsub("%b()", "")
@@ -23,7 +32,15 @@ local CLIENT_DATA = {
     end)(),
 }
 
-local SoundService = game:GetService("SoundService")
+local SERVER_DATA = {
+    SERVER_ID = 1,
+    JOB_ID = game.JobId,
+    SERVER_REGION = game:GetService("LocalizationService"):GetCountryRegionForPlayerAsync(game.Players.LocalPlayer) or "Unknown",
+    MAX_PLAYERS = game.Players.MaxPlayers,
+    CURRENT_PLAYERS = function()
+        return #Players:GetPlayers()
+    end
+}
 
 local WindUI, SoundModule = (function()
     local LIBRARIES = {
@@ -82,5 +99,25 @@ Elements.PremiumWindow = (function()
     win:Divider()
 
     return win
+end)()
+
+Elements.InformationSection = (function()
+    local section = Elements.PremiumWindow:Section({
+        Title = "Information",
+        Icon = "info",
+        Opened = true
+    })
+
+    section.ClientInformation = section:Tab({
+        Title = "Client",
+        Icon = "monitor-down"
+    })
+
+    section.ServerInformation = section:Tab({
+        Title = "Server",
+        Icon = "server"
+    })
+
+    return section
 end)()
 
