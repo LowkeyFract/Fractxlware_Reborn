@@ -4,5 +4,8 @@
         "writefile",
         "readfile",
         "isfile"
-    ]
+    ],
+    "files.exclude": {
+        ".github": true
+    }
 }
