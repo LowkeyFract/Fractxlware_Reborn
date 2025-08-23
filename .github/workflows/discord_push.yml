@@ -23,7 +23,6 @@ jobs:
                -X POST \
                -d "{
                  \"username\":\"Your Name Here\",  # webhook username
-                 \"avatar_url\":\"https://cdn.discordapp.com/avatars/YOURID/YOURAVATAR.png\",  # your Discord avatar
                  \"embeds\":[{
                    \"author\":{\"name\":\"New Commit\",\"icon_url\":\"$COMMIT_AVATAR\"},
                    \"description\":\"$COMMIT_MESSAGE\",
