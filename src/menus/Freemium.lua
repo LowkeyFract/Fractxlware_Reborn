@@ -23,6 +23,8 @@ local CLIENT_DATA = {
     end)(),
 }
 
+local SoundService = game:GetService("SoundService")
+
 local WindUI, SoundModule = (function()
     local LIBRARIES = {
         WindUI      = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
@@ -40,7 +42,13 @@ end)()
 
 local Elements = {}
 Elements.FreemiumWindow = (function()
-    SoundModule.Play(82845990304289, 1, game:GetService("SoundService"))
+    WindUI:Notify({
+        Title = "Successfully Loaded!",
+        Content = "Fractxlware Reborn has been successfully loaded.",
+        Icon = "check",
+    })
+
+    SoundModule.Play(82845990304289, 1, SoundService)
 
     local win = WindUI:CreateWindow({
         Title = SCRIPT_DATA.Name,
@@ -57,7 +65,7 @@ Elements.FreemiumWindow = (function()
         ScrollBarEnabled = false,
     })
 
-        win:IsResizable(false)
+    win:IsResizable(false)
 
     win:DisableTopbarButtons({"Minimize", "Fullscreen"})
 
@@ -78,4 +86,6 @@ Elements.FreemiumWindow = (function()
     })
 
     win:Divider()
+
+    return win
 end)()
