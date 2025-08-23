@@ -1,6 +1,5 @@
 name: Discord Push Notification
 
-# Trigger on any push
 on:
   push:
 
@@ -13,9 +12,8 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-          AUTHOR_NAME: ${{ github.event.head_commit.author.name }}
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"username\":\"GitHub Bot\",\"content\":\"New commit by $AUTHOR_NAME: $COMMIT_MESSAGE\",\"embeds\":[{\"title\":\"Commit\",\"description\":\"$COMMIT_MESSAGE\",\"url\":\"\"}]}" \
+               -d "{\"username\":\"GitHub\",\"embeds\":[{\"title\":\"Commit\",\"description\":\"$COMMIT_MESSAGE\",\"url\":\"\"}]}" \
                $WEBHOOK_URL
