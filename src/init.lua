@@ -40,6 +40,7 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI, PremiumStart, FreemiumStar
         FreemiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Freemium.lua",
     }
 
+    
     local loaded = {}
     for name, url in pairs(LIBRARIES) do
         local ok, mod = pcall(loadstring, game:HttpGet(url))
