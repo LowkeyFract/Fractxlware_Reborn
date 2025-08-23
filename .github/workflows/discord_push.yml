@@ -16,12 +16,24 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           BRANCH: ${{ github.ref_name }}
         run: |
+          # Default avatar if GitHub doesn't provide one
           if [ -z "$COMMIT_AVATAR" ]; then
             COMMIT_AVATAR="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           fi
 
+          # Shorten commit hash
           SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
 
+          # Pick branch formatting
+          if [ "$BRANCH" = "main" ]; then
+            BRANCH_DISPLAY="\`\`\`ini\n[ main ]\n\`\`\`"
+          elif [ "$BRANCH" = "Development" ]; then
+            BRANCH_DISPLAY="\`\`\`fix\nDevelopment\n\`\`\`"
+          else
+            BRANCH_DISPLAY="\`\`\`yaml\n$BRANCH\n\`\`\`"
+          fi
+
+          # Default color (purple)
           COLOR=10181046
 
           curl -H "Content-Type: application/json" \
@@ -33,7 +45,7 @@ jobs:
                    \"description\":\"$COMMIT_MESSAGE\",
                    \"fields\":[
                      {\"name\":\"Commit\",\"value\":\"\`$SHORT_SHA\`\",\"inline\":true},
-                     {\"name\":\"Branch\",\"value\":\"\`$BRANCH\`\",\"inline\":true}
+                     {\"name\":\"Branch\",\"value\":\"$BRANCH_DISPLAY\",\"inline\":true}
                    ],
                    \"color\": $COLOR,
                    \"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
