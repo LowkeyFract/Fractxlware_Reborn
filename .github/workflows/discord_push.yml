@@ -24,7 +24,10 @@ jobs:
           # Shorten commit hash
           SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
 
-          # Default color (purple)
+          # Inline code for branch
+          BRANCH_DISPLAY="\`$BRANCH\`"
+
+          # Default embed color (purple)
           COLOR=10181046
 
           curl -H "Content-Type: application/json" \
@@ -36,7 +39,7 @@ jobs:
                    \"description\":\"$COMMIT_MESSAGE\",
                    \"fields\":[
                      {\"name\":\"Commit\",\"value\":\"\`$SHORT_SHA\`\",\"inline\":true},
-                     {\"name\":\"Branch\",\"value\":\"\`$BRANCH\`\",\"inline\":true}
+                     {\"name\":\"Branch\",\"value\":\"$BRANCH_DISPLAY\",\"inline\":true}
                    ],
                    \"color\": $COLOR,
                    \"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
