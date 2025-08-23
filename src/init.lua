@@ -39,7 +39,7 @@ local WindUI, LoadingScreen, SoundModule, LicenseAPI, PremiumStart, FreemiumStar
         PremiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Premium.lua",
         FreemiumStart = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/Freemium.lua",
     }
-    
+
 
     local loaded = {}
     for name, url in pairs(LIBRARIES) do
