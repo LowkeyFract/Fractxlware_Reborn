@@ -16,22 +16,13 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           BRANCH: ${{ github.ref_name }}
         run: |
-          # Default avatar if GitHub doesn't provide one
           if [ -z "$COMMIT_AVATAR" ]; then
             COMMIT_AVATAR="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           fi
 
-          # Pick embed color based on branch
-          if [ "$BRANCH" = "main" ]; then
-            COLOR=5793266   # Discord blurple
-          elif [ "$BRANCH" = "Development" ]; then
-            COLOR=16753920  # Discord orange
-          else
-            COLOR=10181046  # Purple default
-          fi
-
-          # Shorten commit hash
           SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
+
+          COLOR=10181046
 
           curl -H "Content-Type: application/json" \
                -X POST \
