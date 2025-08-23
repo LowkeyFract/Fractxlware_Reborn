@@ -9,7 +9,21 @@ local SCRIPT_DATA = {
 }
 
 local CLIENT_DATA = {
-    DEVICE = game:GetService("UserInputService"):GetPlatform() or "Unknown",
+    DEVICE = (function()
+        local platform = game:GetService("UserInputService"):GetPlatform()
+
+        if platform == Enum.Platform.IOS or platform == Enum.Platform.Android then
+            return "Mobile"
+        elseif platform == Enum.Platform.OSX or platform == Enum.Platform.Windows then
+            return "PC"
+        elseif platform == Enum.Platform.UWP then
+            return "Tablet"
+        elseif platform == Enum.Platform.Emulator then
+            return "Emulator"
+        else
+            return "Unknown"
+        end
+    end)(),
     ACC_NAME = Players.LocalPlayer.Name or "Unknown",
     ACC_DISPLAY_NAME = Players.LocalPlayer.DisplayName or "Unknown",
     PLAYER_ID = Players.LocalPlayer.UserId or 0,
@@ -33,14 +47,24 @@ local CLIENT_DATA = {
 }
 
 local SERVER_DATA = {
-    SERVER_ID = 1,
+    PLACE_ID = game.PlaceId,
     JOB_ID = game.JobId,
     SERVER_REGION = game:GetService("LocalizationService"):GetCountryRegionForPlayerAsync(game.Players.LocalPlayer) or "Unknown",
     MAX_PLAYERS = game.Players.MaxPlayers,
-    CURRENT_PLAYERS = function()
-        return #Players:GetPlayers()
-    end
+    CURRENT_PLAYERS = (function()
+        local current = #Players:GetPlayers()
+        Players.PlayerAdded:Connect(function()
+            current = #Players:GetPlayers()
+        end)
+        Players.PlayerRemoving:Connect(function()
+            current = #Players:GetPlayers()
+        end)
+        return function()
+            return current
+        end
+    end)()
 }
+
 
 local WindUI, SoundModule = (function()
     local LIBRARIES = {
@@ -113,11 +137,98 @@ Elements.InformationSection = (function()
         Icon = "monitor-down"
     })
 
+    section.ClientInformation.ClientInfo = section.ClientInformation:Code({
+        Title = "Client Information",
+        Code = 'Device : '..CLIENT_DATA.DEVICE..'\n'..
+               'Name : '..CLIENT_DATA.ACC_NAME.."("..CLIENT_DATA.ACC_DISPLAY_NAME..")"..'\n'..
+               'Player ID : '..CLIENT_DATA.PLAYER_ID..'\n'..
+               'Client ID : '..CLIENT_DATA.CLIENT_ID..'\n'..
+               'Account Age : '..CLIENT_DATA.ACCOUNT_AGE..' days'
+    })
+
+    section.ClientInformation:Divider()
+
+    section.ClientInformation:Button({
+        Title = "Copy Client ID",
+        Description = "Copies your Client ID to your clipboard.",
+        Callback = function()
+            setclipboard(CLIENT_DATA.CLIENT_ID)
+            WindUI:Notify({
+                Title = "Copied Client ID",
+                Content = "Your Client ID has been copied to your clipboard.",
+                Icon = "clipboard"
+            })
+        end
+    })
+
+    section.ClientInformation:Button({
+        Title = "Copy Player ID",
+        Description = "Copies your Player ID to your clipboard.",
+        Callback = function()
+            setclipboard(CLIENT_DATA.PLAYER_ID)
+            WindUI:Notify({
+                Title = "Copied Player ID",
+                Content = "Your Player ID has been copied to your clipboard.",
+                Icon = "clipboard"
+            })
+        end
+    })
+
     section.ServerInformation = section:Tab({
         Title = "Server",
         Icon = "server"
     })
 
+    
+    section.ServerInformation.ServerInfo = section.ServerInformation:Code({
+        Title = "Server Information",
+        Code = 'Game : '..CLIENT_DATA.GAME..'\n'..
+               'Place ID : '..SERVER_DATA.PLACE_ID..'\n'..
+               'Job ID : '..SERVER_DATA.JOB_ID..'\n'..
+               'Region : '..SERVER_DATA.SERVER_REGION..'\n'..
+               'Players : '..SERVER_DATA.CURRENT_PLAYERS()..'/'..SERVER_DATA.MAX_PLAYERS
+    })
+
+    
+    game:GetService("RunService").Heartbeat:Connect(function()
+        section.ServerInformation.ServerInfo:SetCode(
+            'Game : '..CLIENT_DATA.GAME..'\n'..
+            'Place ID : '..SERVER_DATA.PLACE_ID..'\n'..
+            'Job ID : '..SERVER_DATA.JOB_ID..'\n'..
+            'Region : '..SERVER_DATA.SERVER_REGION..'\n'..
+            'Players : '..SERVER_DATA.CURRENT_PLAYERS()..'/'..SERVER_DATA.MAX_PLAYERS
+        )
+    end)
+
+    section.ServerInformation:Divider()
+
+    section.ServerInformation.CopyJobId = section.ServerInformation:Button({
+        Title = "Copy Job ID",
+        Description = "Copies the current server's Job ID to your clipboard.",
+        Callback = function()
+            setclipboard(SERVER_DATA.JOB_ID)
+            WindUI:Notify({
+                Title = "Copied Job ID",
+                Content = "The Job ID has been copied to your clipboard.",
+                Icon = "clipboard"
+            })
+        end
+    })
+
+    section.ServerInformation.CopyPlaceID = section.ServerInformation:Button({
+        Title = "Copy Place ID",
+        Description = "Copies the current server's Place ID to your clipboard.",
+        Callback = function()
+            setclipboard(SERVER_DATA.PLACE_ID)
+            WindUI:Notify({
+                Title = "Copied Place ID",
+                Content = "The Place ID has been copied to your clipboard.",
+                Icon = "clipboard"
+            })
+        end
+    })
+
     return section
 end)()
+
 
