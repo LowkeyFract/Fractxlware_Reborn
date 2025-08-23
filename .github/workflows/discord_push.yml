@@ -30,13 +30,16 @@ jobs:
           # Default embed color (purple)
           COLOR=10181046
 
+          # Escape commit message for JSON
+          ESCAPED_MESSAGE=$(echo "$COMMIT_MESSAGE" | jq -R .)
+
           curl -H "Content-Type: application/json" \
                -X POST \
                -d "{
                  \"username\":\"GitHub\",
                  \"embeds\":[{
                    \"author\":{\"name\":\"New Commit\",\"icon_url\":\"$COMMIT_AVATAR\"},
-                   \"description\":\"$COMMIT_MESSAGE\",
+                   \"description\":$ESCAPED_MESSAGE,
                    \"fields\":[
                      {\"name\":\"Commit\",\"value\":\"\`$SHORT_SHA\`\",\"inline\":true},
                      {\"name\":\"Branch\",\"value\":\"$BRANCH_DISPLAY\",\"inline\":true}
