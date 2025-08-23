@@ -2,7 +2,7 @@ local Identifier = "fractxlware_reborn"
 
 local SCRIPT_DATA = {
     Name    = "Fractxlware Reborn",
-    Build   = { Name = "In Development", Color = "#FFA41A" },
+    Build   = { Name = "Staging", Color = "#FFA41A" },
     Type    = { Name = "Public", Color = "#234234" },
     Author  = "discord.gg/6qyh5mfN5h",
 }
@@ -160,14 +160,14 @@ Elements.KeySection = (function()
                         PremiumStart:Init()
                             WindUI:Notify({
                                 Title   = "Successfully Loaded!",
-                                Content = "Premium Hub have been successfully loaded.",
+                                Content = "Premium Hub has been successfully loaded.",
                                 Icon    = "check",
                             })
                     else
                         FreemiumStart:Init()
                             WindUI:Notify({
                                 Title   = "Successfully Loaded!",
-                                Content = "Freemium Hub have been successfully loaded.",
+                                Content = "Freemium Hub has been successfully loaded.",
                                 Icon    = "check",
                             })
                     end
