@@ -16,31 +16,29 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
           BRANCH: ${{ github.ref_name }}
         run: |
+          # Default avatar if GitHub doesn't provide one
           if [ -z "$COMMIT_AVATAR" ]; then
             COMMIT_AVATAR="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           fi
 
+          # Shorten commit hash
           SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
-          COLOR=10181046
 
-          payload=$(cat <<EOF
-          {
-            "username": "GitHub",
-            "embeds": [{
-              "author": { "name": "New Commit", "icon_url": "$COMMIT_AVATAR" },
-              "description": "$COMMIT_MESSAGE",
-              "fields": [
-                { "name": "Commit", "value": "\`$SHORT_SHA\`", "inline": true },
-                { "name": "Branch", "value": "\`$BRANCH\`", "inline": true }
-              ],
-              "color": $COLOR,
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            }]
-          }
-EOF
-)
+          # Default color (purple)
+          COLOR=10181046
 
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "$payload" \
-               "$WEBHOOK_URL"
+               -d "{
+                 \"username\":\"GitHub\",
+                 \"embeds\":[{
+                   \"author\":{\"name\":\"New Commit\",\"icon_url\":\"$COMMIT_AVATAR\"},
+                   \"description\":\"$COMMIT_MESSAGE\",
+                   \"fields\":[
+                     {\"name\":\"Commit\",\"value\":\"\`$SHORT_SHA\`\",\"inline\":true},
+                     {\"name\":\"Branch\",\"value\":\"\`$BRANCH\`\",\"inline\":true}
+                   ],
+                   \"color\": $COLOR,
+                   \"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+                 }]
+               }" $WEBHOOK_URL
