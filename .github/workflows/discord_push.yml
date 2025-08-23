@@ -23,11 +23,11 @@ jobs:
 
           # Pick embed color based on branch
           if [ "$BRANCH" = "main" ]; then
-            COLOR=3447003   # Blue
+            COLOR=5793266   # Discord blurple
           elif [ "$BRANCH" = "Development" ]; then
-            COLOR=16753920  # Orange/yellow
+            COLOR=16753920  # Discord orange
           else
-            COLOR=7506394   # Default purple/gray
+            COLOR=10181046  # Purple default
           fi
 
           # Shorten commit hash
@@ -42,7 +42,7 @@ jobs:
                    \"description\":\"$COMMIT_MESSAGE\",
                    \"fields\":[
                      {\"name\":\"Commit\",\"value\":\"\`$SHORT_SHA\`\",\"inline\":true},
-                     {\"name\":\"Branch\",\"value\":\"$BRANCH\",\"inline\":true}
+                     {\"name\":\"Branch\",\"value\":\"\`$BRANCH\`\",\"inline\":true}
                    ],
                    \"color\": $COLOR,
                    \"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
