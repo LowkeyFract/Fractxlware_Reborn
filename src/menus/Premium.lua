@@ -66,10 +66,11 @@ local SERVER_DATA = {
 }
 
 
-local WindUI, SoundModule = (function()
+local WindUI, SoundModule, ScriptTable = (function()
     local LIBRARIES = {
         WindUI      = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
         SoundModule = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/libraries/SoundModule.lua",
+        ScriptTable = "https://raw.githubusercontent.com/LowkeyFract/Fractxlware_Reborn/refs/heads/main/src/menus/scripts/ScriptTable.lua",
     }
 
     local loaded = {}
@@ -78,8 +79,10 @@ local WindUI, SoundModule = (function()
         loaded[name] = ok and mod() or warn("Failed to load "..name)
     end
 
-    return loaded.WindUI, loaded.SoundModule
+    return loaded.WindUI, loaded.SoundModule, loaded.ScriptTable
 end)()
+
+local DETECTED_SCRIPT = ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["Universal"]
 
 local Elements = {}
 Elements.PremiumWindow = (function()
@@ -231,4 +234,9 @@ Elements.InformationSection = (function()
     return section
 end)()
 
-
+local ok, fn = pcall(loadstring, game:HttpGet(DETECTED_SCRIPT))
+if ok and typeof(fn) == "function" then
+    fn(Elements.PremiumWindow, WindUI)
+else
+    warn("Failed to load script:", DETECTED_SCRIPT)
+end
