@@ -1,18 +1,5 @@
-return function(win, WindUI)
-    print("Loaded Universal Script")
-    local tab = win.GameSection:Tab({
-        Title = "Universal Features",
-        Icon = "star"
-    })
+local UniversalScript = {}
 
-    tab:Button({
-        Title = "Example Button",
-        Callback = function()
-            WindUI:Notify({
-                Title = "Universal",
-                Content = "This is the universal script!",
-                Icon = "check"
-            })
-        end
-    })
-end
+print("hi")
+
+return UniversalScript
