@@ -234,16 +234,18 @@ Elements.InformationSection = (function()
     return section
 end)()
 
-local ok, scriptStr = pcall(game.HttpGet, game, DETECTED_SCRIPT)
-if not ok then
-    warn("Failed to HttpGet universal script:", scriptStr)
-else
-    print("Universal script length:", #scriptStr)
-    local fn, err = loadstring(scriptStr)
-    if not fn then
-        warn("Loadstring failed:", err)
+local ok, scriptStr = pcall(function()
+    return game:HttpGet(DETECTED_SCRIPT)
+end)
+
+if ok and scriptStr then
+    local func, loadErr = loadstring(scriptStr)
+    if func then
+        func(Elements.PremiumWindow, WindUI) -- pass parameters here
     else
-        fn(Elements.PremiumWindow, WindUI)
-        print("Universal script executed inside premium script!")
+        warn("Failed to load script: "..tostring(loadErr))
     end
+else
+    warn("Failed to fetch script: "..tostring(scriptStr))
 end
+
