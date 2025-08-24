@@ -1,4 +1,5 @@
 return function(win, WindUI)
+    print("Loaded Universal Script")
     local tab = win.GameSection:Tab({
         Title = "Universal Features",
         Icon = "star"
