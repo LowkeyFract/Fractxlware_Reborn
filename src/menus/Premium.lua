@@ -83,6 +83,8 @@ local WindUI, SoundModule, ScriptTable = (function()
 end)()
 
 local DETECTED_SCRIPT = loadstring(game:HttpGet(ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["universal"]))()
+local gameSupported = ScriptTable[SERVER_DATA.PLACE_ID] ~= nil
+local GameSupportColor = gameSupported and "#BFFFBF" or "#F29B9B"
 
 local Elements = {}
 Elements.PremiumWindow = (function()
@@ -118,7 +120,7 @@ Elements.PremiumWindow = (function()
     })
 
     win.GameSection = win:Section({
-        Title = CLIENT_DATA.GAME,
+        Title = string.format('<font color="%s">%s</font>', GameSupportColor, CLIENT_DATA.GAME),
         Icon = "gamepad",
         Opened = false,
     })
