@@ -84,7 +84,7 @@ local WindUI, SoundModule, ScriptTable = (function()
 end)()
 
 local DETECTED_SCRIPT = loadstring(game:HttpGet(ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["universal"]))()
-local gameSupported = ScriptTable[SERVER_DATA.PLACE_ID] ~= nil
+local gameSupported = ScriptTable[SERVER_DATA.PLACE_ID] == SERVER_DATA.PLACE_ID
 local GameSupportColor = gameSupported and "#BFFFBF" or "#F28D7C"
 
 local Elements = {}
