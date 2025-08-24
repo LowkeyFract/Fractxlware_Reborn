@@ -1,10 +1,23 @@
 local UniversalScript = {}
 
+local Elements = {}
 function UniversalScript.Init(win, WindUI)
-        local section = win:Section({
-            Title = "Testing",
+
+        WindUI:Notify({
+            Title = "Game Not Supported",
+            Content = "Loaded Universal Script",
+            Icon = "scroll-text"
         })
-    return
+
+    Elements.UniversalSection = (function()
+        local section = win:Section({
+            Title = "Universal Script",
+            Icon = "code-xml"
+        })
+        return section
+    end)
+    
+    return Elements
 end
 
 return UniversalScript
