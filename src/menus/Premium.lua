@@ -82,7 +82,7 @@ local WindUI, SoundModule, ScriptTable = (function()
     return loaded.WindUI, loaded.SoundModule, loaded.ScriptTable
 end)()
 
-local DETECTED_SCRIPT = ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["Universal"]
+local DETECTED_SCRIPT = ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["universal"]
 
 local Elements = {}
 Elements.PremiumWindow = (function()
@@ -237,6 +237,4 @@ end)()
 local ok, fn = pcall(loadstring, game:HttpGet(DETECTED_SCRIPT))
 if ok and typeof(fn) == "function" then
     fn(Elements.PremiumWindow, WindUI)
-else
-    warn("Failed to load script:", DETECTED_SCRIPT)
 end
