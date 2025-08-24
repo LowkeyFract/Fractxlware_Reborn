@@ -82,7 +82,8 @@ local WindUI, SoundModule, ScriptTable = (function()
     return loaded.WindUI, loaded.SoundModule, loaded.ScriptTable
 end)()
 
-local DETECTED_SCRIPT = ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["universal"]
+local url = ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["universal"]
+local DETECTED_SCRIPT = loadstring(game:HttpGet(url))
 
 local Elements = {}
 Elements.PremiumWindow = (function()
@@ -234,18 +235,4 @@ Elements.InformationSection = (function()
     return section
 end)()
 
-local ok, scriptStr = pcall(function()
-    return game:HttpGet(DETECTED_SCRIPT)
-end)
-
-if ok and scriptStr then
-    local func, loadErr = loadstring(scriptStr)
-    if func then
-        func(Elements.PremiumWindow, WindUI) -- pass parameters here
-    else
-        warn("Failed to load script: "..tostring(loadErr))
-    end
-else
-    warn("Failed to fetch script: "..tostring(scriptStr))
-end
-
+DETECTED_SCRIPT.Init(Elements.PremiumWindow, WindUI)
