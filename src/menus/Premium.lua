@@ -235,10 +235,9 @@ Elements.InformationSection = (function()
 end)()
 
 local ok, fn = pcall(loadstring, game:HttpGet(DETECTED_SCRIPT))
-print("Loaded universal script:", ok, typeof(fn))
 if ok and typeof(fn) == "function" then
-    fn(Elements.PremiumWindow, WindUI)
-    print("Universal script executed!")
+    fn(Elements.PremiumWindow, WindUI)  -- <-- pass the window & WindUI
+    print("Universal script executed inside premium script!")
 else
-    warn("Failed to load script:", DETECTED_SCRIPT)
+    warn("Failed to load universal script:", fn)
 end

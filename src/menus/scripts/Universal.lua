@@ -1,12 +1,17 @@
 return function(win, WindUI)
-    print("Window object:", win)
-    print("Has Section method:", win.Section ~= nil)
-
-    local section = win:Section({
+    local tab = win.GameSection:Tab({
         Title = "Universal Features",
-        Icon = "star",
-        Opened = true
+        Icon = "star"
     })
 
-    print("Section created:", section)
+    tab:Button({
+        Title = "Example Button",
+        Callback = function()
+            WindUI:Notify({
+                Title = "Universal",
+                Content = "This is the universal script!",
+                Icon = "check"
+            })
+        end
+    })
 end
