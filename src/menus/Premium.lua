@@ -6,6 +6,7 @@ local SCRIPT_DATA = {
     Build   = { Name = "In Development", Color = "#FFA41A" },
     Type   = { Name = "Premium", Color = "#005BD9" },
     Author = "discord.gg/6qyh5mfN5h",
+    Version = "0.0.1",
 }
 
 local CLIENT_DATA = {
@@ -84,7 +85,7 @@ end)()
 
 local DETECTED_SCRIPT = loadstring(game:HttpGet(ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["universal"]))()
 local gameSupported = ScriptTable[SERVER_DATA.PLACE_ID] ~= nil
-local GameSupportColor = gameSupported and "#BFFFBF" or "#F29B9B"
+local GameSupportColor = gameSupported and "#BFFFBF" or "#F28D7C"
 
 local Elements = {}
 Elements.PremiumWindow = (function()
@@ -237,3 +238,9 @@ Elements.InformationSection = (function()
 end)()
 
 DETECTED_SCRIPT.Init(Elements.PremiumWindow, WindUI)
+
+Elements.PremiumWindow:Divider()
+
+Elements.PremiumWindow:Section({
+    Title = "v"..SCRIPT_DATA.Version,
+})
