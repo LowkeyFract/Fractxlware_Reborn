@@ -1,7 +1,9 @@
 local UniversalScript = {}
 
 function UniversalScript.Init(win, WindUI)
-    print("Universal Scripted Init")
+        local section = win:Section({
+            Title = "Testing",
+        })
     return
 end
 

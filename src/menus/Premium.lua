@@ -83,7 +83,8 @@ local WindUI, SoundModule, ScriptTable = (function()
 end)()
 
 local url = ScriptTable[SERVER_DATA.PLACE_ID] or ScriptTable["universal"]
-local DETECTED_SCRIPT = loadstring(game:HttpGet(url))
+local DETECTED_SCRIPT_FUNC = loadstring(game:HttpGet(url))
+local DETECTED_SCRIPT = DETECTED_SCRIPT_FUNC()
 
 local Elements = {}
 Elements.PremiumWindow = (function()
