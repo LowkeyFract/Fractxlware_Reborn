@@ -15,9 +15,9 @@ function UniversalScript.Init(win, WindUI)
             Icon = "code-xml"
         })
         return section
-    end)
+    end)()
 
-    return
+    return Elements
 end
 
 return UniversalScript
