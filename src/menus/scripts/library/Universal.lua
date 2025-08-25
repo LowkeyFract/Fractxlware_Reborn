@@ -7,8 +7,15 @@ function UniversalScript.Init(win, WindUI)
             Title = "Universal Script",
             Icon = "code-xml"
         })
+
+        section.PlayerSection = section:Tab({
+            Title = "Player",
+            Icon = "user-cog",
+        })
         return section
     end)()
+
+
 
     return Elements
 end
