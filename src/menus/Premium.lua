@@ -184,7 +184,7 @@ Elements.InformationSection = (function()
         Icon = "server"
     })
 
-    
+
     section.ServerInformation.ServerInfo = section.ServerInformation:Code({
         Title = "Server Information",
         Code = 'Game : '..CLIENT_DATA.GAME..'\n'..
@@ -194,7 +194,7 @@ Elements.InformationSection = (function()
                'Players : '..SERVER_DATA.CURRENT_PLAYERS()..'/'..SERVER_DATA.MAX_PLAYERS
     })
 
-    
+
     game:GetService("RunService").Heartbeat:Connect(function()
         section.ServerInformation.ServerInfo:SetCode(
             'Game : '..CLIENT_DATA.GAME..'\n'..
